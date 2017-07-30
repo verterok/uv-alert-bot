@@ -1,0 +1,6 @@
+# telegram bot token
+token: "Ao3Fohh6Voomaesh2Uy8dohphu6Shohcaid9jee3Iodie"
+valid_users: 
+  - mytelegramuser
+# path to a file to keep state, e.g: group to use for notifications
+state_file: ./state.file
