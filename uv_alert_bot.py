@@ -104,9 +104,11 @@ def main(config, state):
     alert_bot = AlertBot(bot, loop, config['valid_users'], state)
     email_handler = UnifiAlertMessage(alert_bot)
     # create smtpd task
-    loop.create_task(email_handler.smtpd_main('0.0.0.0', 8025))
+    loop.create_task(email_handler.smtpd_main(config.get('smtp_listen', '0.0.0.0'),
+                                              config.get('smtp_port', 8025)))
     # create bot task
     loop.create_task(MessageLoop(bot, alert_bot.handle).run_forever())
+    logging.info("Starting Bot and smtpd")
     loop.run_forever()
 
 if __name__ == '__main__':
