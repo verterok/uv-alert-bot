@@ -8,12 +8,12 @@ import shelve
 from io import BytesIO
 from urllib.request import urlopen
 
-import yaml
-import telepot
+import yaml # fades.pypi pyyaml == 3.12
+import telepot # fades.pypi == 12.1
 import telepot.aio
 from telepot.aio.loop import MessageLoop
 
-from aiosmtpd.controller import Controller
+from aiosmtpd.controller import Controller # fades.pypi == 1.1
 from aiosmtpd.handlers import Message
 
 
@@ -49,7 +49,7 @@ class AlertBot:
         self.loop = loop
         self.bot = bot
         self.active = self.state.get('active')
-    
+
     def sendMessage(self, message):
         if self.state.get('group'):
             self.loop.create_task(self.bot.sendMessage(self.state.get('group')['id'], message))
@@ -60,11 +60,11 @@ class AlertBot:
 
     async def handle(self, msg):
         content_type, chat_type, chat_id = telepot.glance(msg)
-        logging.info("Message received: content: %s, type: %s, chat_id: %s, msg: %s",  
+        logging.info("Message received: content: %s, type: %s, chat_id: %s, msg: %s",
                      content_type, chat_type, chat_id, msg)
         user = msg['from']['username']
         if user not in self.valid_users:
-            logging.warning("Message from UNKNOWN user: %s, content: %s, type: %s, chat_id: %s, msg: %s", 
+            logging.warning("Message from UNKNOWN user: %s, content: %s, type: %s, chat_id: %s, msg: %s",
                             user, content_type, chat_type, chat_id, msg)
             await self.bot.sendMessage(chat_id, "Sorry, I can't do that. Please contact the bot admin")
             return
@@ -72,7 +72,7 @@ class AlertBot:
             # ignore it
             logging.debug("Ignoring message: %s", msg)
             return
-        if chat_type == 'group' and msg['text'] == '/start': 
+        if chat_type == 'group' and msg['text'] == '/start':
             group = self.state.get('group')
             if group:
                 logging.warning("Already bound to a group: %s", group['title'])
@@ -119,5 +119,5 @@ if __name__ == '__main__':
     options = parser.parse_args()
     with open(options.config, 'r') as fd:
         config = yaml.load(fd)
-    state = shelve.open(config['state_file']) 
+    state = shelve.open(config['state_file'])
     main(config, state)
