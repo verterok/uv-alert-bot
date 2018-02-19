@@ -1,8 +1,12 @@
-# blocking ftp server 
+# blocking ftp server
+
+import logging
+import os
+
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 from pyftpdlib.authorizers import DummyAuthorizer, AuthenticationFailed
-import os
+
 pyftpdlib_logger = logging.getLogger('pyftpdlib')
 pyftpdlib_logger.propagate = False
 
@@ -13,7 +17,7 @@ class FTPAuthorizer(DummyAuthorizer):
 
     def set_credentials(self, username, password, homedir):
         self.username = username
-        self.password = password 
+        self.password = password
         self.homedir = homedir
 
     def validate_authentication(self, username, password, handler):
