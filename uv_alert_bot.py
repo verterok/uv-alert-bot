@@ -64,19 +64,21 @@ class AlertBot:
                 self.state.get('group')['id'], message))
 
     def sendPhoto(self, image, topic):
-        now = time.time()
-        last_call =  self.topics[topic].get('last_call', self.no_call)
-        call_delta = now - last_call
-        logging.info("Got image from: %s - last_call: %s - delta: %s", topic,
-                     last_call, call_delta)
-        if self.state.get('group') and self.active:
-            if last_call == self.no_call or call_delta > self.message_limit:
-                self.loop.create_task(self.bot.sendPhoto(
-                    self.state.get('group')['id'], image))
-                self.topics[topic]['last_call'] = now
-            else:
-                logging.info("Throttling message from topic: %s - delta: %s",
-                             topic, call_delta)
+        if topic == 'ftp':
+            now = time.time()
+            last_call =  self.topics[topic].get('last_call', self.no_call)
+            call_delta = now - last_call
+            logging.info("Got image from: %s - last_call: %s - delta: %s", topic,
+                         last_call, call_delta)
+            if self.state.get('group') and self.active:
+                if last_call == self.no_call or call_delta > self.message_limit:
+                    self.topics[topic]['last_call'] = now
+                else:
+                    logging.info("Throttling message from topic: %s - delta: %s",
+                                 topic, call_delta)
+                    return
+        self.loop.create_task(self.bot.sendPhoto(
+            self.state.get('group')['id'], image))
 
     async def handle(self, msg):
         content_type, chat_type, chat_id = telepot.glance(msg)
