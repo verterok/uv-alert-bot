@@ -123,7 +123,7 @@ class AlertBot:
             await self.bot.sendMessage(chat_id, status)
 
     def ftp_event(self, topic, filepath):
-        if topic == 'ftpd_file_received':
+        if topic == 'ftpd_file_received' and self.active:
             with open(filepath, 'rb') as fd:
                 self.sendPhoto(fd.read(), topic="ftp")
 
