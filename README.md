@@ -2,7 +2,7 @@
 # What's this?
 
 A telegram bot to bridge unifi-video email alerts with telegram notifications/messages in a single group.
-It will also send the subject of non-motion alert emails, e.g: cammera disconnect/reconnect
+It will also send the subject of non-motion alert emails, e.g: camera disconnect/reconnect
 
 The bot supports 3 commands:
 
