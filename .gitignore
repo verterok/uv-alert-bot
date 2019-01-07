@@ -4,3 +4,4 @@ venv
 __pycache__
 state.file
 config.yaml
+*.pyc
