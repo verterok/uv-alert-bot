@@ -68,14 +68,15 @@ class AlertBot:
             now = time.time()
             last_call =  self.topics[topic].get('last_call', self.no_call)
             call_delta = now - last_call
-            logging.info("Got image from: %s - last_call: %s - delta: %s", topic,
-                         last_call, call_delta)
+            logging.info("Got image from: %s - last_call: %s - delta: %s",
+                         topic, last_call, call_delta)
             if self.state.get('group') and self.active:
-                if last_call == self.no_call or call_delta > self.message_limit:
+                if last_call == self.no_call or \
+                        call_delta > self.message_limit:
                     self.topics[topic]['last_call'] = now
                 else:
-                    logging.info("Throttling message from topic: %s - delta: %s",
-                                 topic, call_delta)
+                    logging.info("Throttling message from topic: %s - "
+                                 "delta: %s", topic, call_delta)
                     return
         self.loop.create_task(self.bot.sendPhoto(
             self.state.get('group')['id'], image))
@@ -158,6 +159,6 @@ if __name__ == '__main__':
     parser.add_argument('config')
     options = parser.parse_args()
     with open(options.config, 'r') as fd:
-        config = yaml.load(fd)
+        config = yaml.safe_load(fd)
     state = shelve.open(config['state_file'])
     main(config, state)
