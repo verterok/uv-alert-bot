@@ -46,7 +46,7 @@ class UnifiAlertMessage(Message):
 
 class AlertBot:
 
-    message_limit = 5
+    message_limit = 1
     no_call = 0
 
     def __init__(self, bot, loop, valid_users, state):
@@ -85,7 +85,7 @@ class AlertBot:
         content_type, chat_type, chat_id = telepot.glance(msg)
         logging.info("Message received: content: %s, type: %s, chat_id: %s, "
                      "msg: %s", content_type, chat_type, chat_id, msg)
-        user = msg['from']['username']
+        user = msg['from']['id'] # was username, some users don't have one
         if user not in self.valid_users:
             logging.warning("Message from UNKNOWN user: %s, content: %s, type:"
                             " %s, chat_id: %s, msg: %s", user, content_type,
