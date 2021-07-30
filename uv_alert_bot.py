@@ -7,7 +7,7 @@ import tempfile
 
 from io import BytesIO
 
-import yaml # fades.pypi pyyaml == 3.12
+import yaml # fades.pypi pyyaml == 5.4
 import telepot # fades.pypi == 12.1
 import telepot.aio
 from telepot.aio.loop import MessageLoop
